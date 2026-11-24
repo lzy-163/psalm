@@ -97,6 +97,7 @@ jobs:
     permissions:
       packages: write
     needs: build-docker
+    if: ${{ needs.build-docker.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
@@ -111,6 +112,10 @@ jobs:
           coverage: none
         env:
           fail-fast: true
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Upload final docker image
         env:
